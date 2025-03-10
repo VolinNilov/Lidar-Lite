@@ -1,5 +1,7 @@
 import smbus
 import time
+import keyboard
+import matplotlib.pyplot as plt
 
 class Lidar_Lite():
   def __init__(self):
@@ -51,4 +53,80 @@ class Lidar_Lite():
     else:
       return value
 
+  def exit_requested(self, key):
+      """
+      Checks whether the specified key has been pressed.
+      Returns True if the key has been pressed.
 
+      :param key: String representing the key to check (e.g., 'q', 'esc')
+      :raises TypeError: If the key parameter is not a string
+
+      Use example:
+        try:
+          print ("Start reading data ...")
+          while not lidar.exit_requested('q'):
+              if connected < -1:
+                  print("Not Connected")
+              print(lidar.getDistance())
+              print(lidar.getVelocity())
+          print ("END.")
+        except Exception as e:
+          print ("END.")
+          print(f"Error: {e}")
+      """
+      if not isinstance(key, str):
+          raise TypeError("Key parameter must be a STRING")
+      
+      return keyboard.is_pressed(key)
+
+  def generate_graph(time_stamps, distances_array, velocities_array):
+      """
+      Creates and saves two graphs on one image:
+      1. Distance vs. time
+      2. Velocity vs. time
+
+      :param time_stamps: list of timestamps
+      :param distances_array: list of distance values
+      :param velocities_array: list of velocity values
+      """
+      try:
+          # Data verification
+          if not all([len(time_stamps), len(distances_array), len(velocities_array)]):
+              raise ValueError("One of the data arrays is empty.")
+          if not (len(time_stamps) == len(distances_array) == len(velocities_array)):
+              raise ValueError("The data arrays have different lengths.")
+
+          # Create an image
+          plt.figure(figsize=(12, 8))
+          
+          # Distance graph
+          plt.subplot(2, 1, 1)
+          plt.plot(time_stamps, distances_array, 'b-', linewidth=1.5)
+          plt.title('Distance Measurement', fontsize=12)
+          plt.xlabel('Time, seconds', fontsize=10)
+          plt.ylabel('Distance, cm', fontsize=10)
+          plt.grid(True, linestyle='--', alpha=0.7)
+          plt.tick_params(axis='both', which='major', labelsize=9)
+
+          # Velocity ​​graph
+          plt.subplot(2, 1, 2)
+          plt.plot(time_stamps, velocities_array, 'r-', linewidth=1.5)
+          plt.title('Velocity Measurement', fontsize=12)
+          plt.xlabel('Time, seconds', fontsize=10)
+          plt.ylabel('Velocity, cm/s', fontsize=10)
+          plt.grid(True, linestyle='--', alpha=0.7)
+          plt.tick_params(axis='both', which='major', labelsize=9)
+
+          # Formatting and saving
+          plt.tight_layout(pad=3.0)
+          current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
+          plot_name = f"lidar_plot_{current_time}.png"
+          
+          plt.savefig(plot_name, dpi=300, bbox_inches='tight')
+          plt.close()
+          
+          print(f"\nThe graphs were successfully saved as: {plot_name}")
+
+      except Exception as e:
+          print(f"Error generating graphs: {str(e)}")
+          raise
