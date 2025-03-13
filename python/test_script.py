@@ -30,7 +30,7 @@ def read_data():
     lidar.generate_graph(timestamps, distances, velocities)
 
   except Exception as e:
-    print ("END.")
     print(f"Error: {e}")
+    print ("END.")
 
 read_data()
