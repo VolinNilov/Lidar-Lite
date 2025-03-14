@@ -13,21 +13,21 @@ def read_data():
 
     print ("[START]")
 
-    while not lidar.exit_requested('q'):
-        if connected < -1:
-            print("Not Connected")
-            return 
-        distance = lidar.getDistance()
-        velocity = lidar.getVelocity()
-        print(f"Distance: {distance};    Velocity: {velocity}")
-            
-        elapsed_time = time.time() - start_time
-        timestamps.append(elapsed_time)
-        distances.append(distance)
-        velocities.append(velocity)
-    
-    print("Finish reading data from lidar.")
-    lidar.generate_graph(timestamps, distances, velocities)
+    while True:
+      if connected < -1:
+          print("Not Connected")
+          return 
+      distance = lidar.getDistance()
+      velocity = lidar.getVelocity()
+      print(f"Дистанция: {distance};    Скорость: {velocity}")
+          
+      elapsed_time = time.time() - start_time
+      timestamps.append(elapsed_time)
+      distances.append(distance)
+      velocities.append(velocity)
+  
+      print("Finish reading data from lidar.")
+      lidar.generate_graph(timestamps, distances, velocities)
     print("[END]")
 
   except Exception as e:
