@@ -1,5 +1,4 @@
 from lidar_lite import Lidar_Lite
-import matplotlib.pyplot as plt
 import time
 
 lidar = Lidar_Lite()
@@ -30,7 +29,7 @@ def read_data():
     print("Finish reading data from lidar.")
     lidar.generate_graph(timestamps, distances, velocities)
     print("[END]")
-    
+
   except Exception as e:
     print(f"[ERROR] {e}")
     print ("[END]")
