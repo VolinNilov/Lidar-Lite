@@ -120,7 +120,7 @@ class Lidar_Lite():
           # Formatting and saving
           plt.tight_layout(pad=3.0)
           current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
-          plot_name = f"lidar_plot_{current_time}.png"
+          plot_name = f"graph/lidar_plot_{current_time}.png"
           
           plt.savefig(plot_name, dpi=300, bbox_inches='tight')
           plt.close()
