@@ -25,10 +25,6 @@ def read_data():
       timestamps.append(elapsed_time)
       distances.append(distance)
       velocities.append(velocity)
-  
-      print("Finish reading data from lidar.")
-      lidar.generate_graph(timestamps, distances, velocities)
-    print("[END]")
 
   except Exception as e:
     print(f"[ERROR] {e}")
