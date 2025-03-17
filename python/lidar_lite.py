@@ -1,5 +1,6 @@
 import smbus
 import time
+import os
 import keyboard
 import matplotlib.pyplot as plt
 
@@ -88,7 +89,7 @@ class Lidar_Lite():
       
       return keyboard.is_pressed(key)
 
-  def generate_graph(self, time_stamps, distances_array, velocities_array):
+  def generate_graph(time_stamps, distances_array, velocities_array):
       """
       Creates and saves two graphs on one image:
       1. Distance vs. time
@@ -99,36 +100,35 @@ class Lidar_Lite():
       :param velocities_array: list of velocity values
       """
       try:
-          # Data verification
           if not all([len(time_stamps), len(distances_array), len(velocities_array)]):
               raise ValueError("One of the data arrays is empty.")
           if not (len(time_stamps) == len(distances_array) == len(velocities_array)):
               raise ValueError("The data arrays have different lengths.")
 
-          # Create an image
           plt.figure(figsize=(12, 8))
           
-          # Distance graph
           plt.subplot(2, 1, 1)
           plt.plot(time_stamps, distances_array, 'b-', linewidth=1.5)
           plt.title('Distance Measurement', fontsize=12)
           plt.xlabel('Time, seconds', fontsize=10)
-          plt.ylabel('Distance, cm', fontsize=10)
+          plt.ylabel('Distance, m', fontsize=10)
           plt.grid(True, linestyle='--', alpha=0.7)
           plt.tick_params(axis='both', which='major', labelsize=9)
 
-          # Velocity ​​graph
           plt.subplot(2, 1, 2)
           plt.plot(time_stamps, velocities_array, 'r-', linewidth=1.5)
           plt.title('Velocity Measurement', fontsize=12)
           plt.xlabel('Time, seconds', fontsize=10)
-          plt.ylabel('Velocity, cm/s', fontsize=10)
+          plt.ylabel('Velocity, m/sec', fontsize=10)
           plt.grid(True, linestyle='--', alpha=0.7)
           plt.tick_params(axis='both', which='major', labelsize=9)
 
-          # Formatting and saving
           plt.tight_layout(pad=3.0)
           current_time = time.strftime("%Y-%m-%d_%H-%M-%S")
+
+          if not os.path.exists("graph"):
+              os.makedirs("graph")
+
           plot_name = f"graph/lidar_plot_{current_time}.png"
           
           plt.savefig(plot_name, dpi=300, bbox_inches='tight')
