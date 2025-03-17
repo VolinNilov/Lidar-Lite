@@ -18,7 +18,7 @@ def read_data():
 
               with open('lidar_data.csv', mode='w', newline='') as file:
                   writer = csv.writer(file)
-                  writer.writerow(['Timestamp', 'Distance (cm)', 'Velocity'])
+                  writer.writerow(['Timestamp', 'Distance (m)', 'Velocity'])
 
                   print("[START] Measurements:")
 
@@ -27,7 +27,7 @@ def read_data():
                       velocity = lidar.getVelocity()
                       elapsed_time = time.time() - start_time
 
-                      print(f"[MEASURMENTS] {elapsed_time}. Дистанция: {distance / 100} m; Скорость: {velocity}")
+                      print(f"[MEASURMENTS] {elapsed_time / 60}. Дистанция: {distance / 100} m; Скорость: {velocity}")
 
                       timestamps.append(elapsed_time)
                       distances.append(distance)
