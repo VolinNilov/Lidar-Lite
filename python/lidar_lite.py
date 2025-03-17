@@ -5,22 +5,31 @@ import matplotlib.pyplot as plt
 
 class Lidar_Lite():
   def __init__(self):
-    self.address = 0x62
-    self.distWriteReg = 0x00
-    self.distWriteVal = 0x04
-    self.distReadReg1 = 0x8f
-    self.distReadReg2 = 0x10
-    self.velWriteReg = 0x04
-    self.velWriteVal = 0x08
-    self.velReadReg = 0x09
+      self.address = 0x62
+      self.distWriteReg = 0x00
+      self.distWriteVal = 0x04
+      self.distReadReg1 = 0x8f
+      self.distReadReg2 = 0x10
+      self.velWriteReg = 0x04
+      self.velWriteVal = 0x08
+      self.velReadReg = 0x09
+      self.bus = None
+
+  def __enter__(self):
+      return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+      if self.bus is not None:
+          # Здесь можно добавить освобождение ресурсов, если это необходимо
+          pass
 
   def connect(self, bus):
-    try:
-      self.bus = smbus.SMBus(bus)
-      time.sleep(0.5)
-      return 0
-    except:
-      return -1
+      try:
+          self.bus = smbus.SMBus(bus)
+          time.sleep(0.5)
+          return 0
+      except Exception as e:
+          raise ConnectionError(f"Failed to connect to I2C bus {bus}: {e}")
 
   def writeAndWait(self, register, value):
     self.bus.write_byte_data(self.address, register, value);
