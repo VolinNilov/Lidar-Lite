@@ -3,8 +3,6 @@ import csv
 
 from lidar_lite import Lidar_Lite
 
-#lidar = Lidar_Lite()
-
 def read_data():
   try:
       with Lidar_Lite() as lidar:
@@ -29,7 +27,7 @@ def read_data():
                       velocity = lidar.getVelocity()
                       elapsed_time = time.time() - start_time
 
-                      print(f"Дистанция: {distance / 100} m; Скорость: {velocity}")
+                      print(f"[MEASURMENTS] {elapsed_time}. Дистанция: {distance / 100} m; Скорость: {velocity}")
 
                       timestamps.append(elapsed_time)
                       distances.append(distance)
