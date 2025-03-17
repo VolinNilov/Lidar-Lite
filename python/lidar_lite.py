@@ -88,7 +88,7 @@ class Lidar_Lite():
       
       return keyboard.is_pressed(key)
 
-  def generate_graph(time_stamps, distances_array, velocities_array):
+  def generate_graph(self, time_stamps, distances_array, velocities_array):
       """
       Creates and saves two graphs on one image:
       1. Distance vs. time
